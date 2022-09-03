@@ -12,9 +12,7 @@ int main(){
 	
 	int n=0;
 	printf("Factorial program (for n up till 20)\n");
-	while (n!=-1){
-	
-	
+	while (n!=100){
 	printf("Enter n:(100 to exit)");
 	scanf("%d",&n);
 	if (n==100)
