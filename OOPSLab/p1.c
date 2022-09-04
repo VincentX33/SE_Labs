@@ -34,8 +34,8 @@ void insertBook(Book * a,int * nbooks){
     scanf("%d",&lcopies);
     a->ncopies = lcopies;
     *nbooks = *nbooks + 1;
-    if (a->name == '\n')printf("Problem");
-    fflush(stdin);
+    if (a->name[0] == '\n')printf("Problem");
+    //fflush(stdin);
 }
 
 void displayBook(Book * a){
@@ -52,20 +52,50 @@ void displayAllBooks(Book * a,int nbooks){
         a++;
     }
 }
+void nameSearch  (Book * a,char * name, int nbooks){
+    int q = 1;
+    for (int i=0;i<(nbooks) && q;i++){
+        //locate the book
+        if (strcmp(a->name, name)==0){
+            printf("\n\tLocated Book\n");
+            q = 0;
+            displayBook(a);
+        }
+        a++;
+    }
+}
+void authorSearch(Book * a, char * author, int nbooks){
+    int q = 1;
+    for (int i=0;i<(nbooks) && q;i++){
+        //locate the book
+        if (strcmp(a->author, author)==0){
+            printf("\n\tLocated Book\n");
+            q = 0;
+            displayBook(a);
+        }
+        a++;
+    }
+}
+void bookDelete  (Book * a, int index = -1){
+    int i;
+    if (index==(-1)){
+        printf("Enter index to delete:");
+        scanf("%d",&i);
+        
+    }
+}
 int main(){
     int i=0,n=0; //n is for number of books in the library(unique only)
-    Book library[3];
+    Book library[10];
     printf("----- Library Management Tool --------\n");
     Book b1;
     //insertBook(&b1,&n);
     //displayBook(&b1);
     Book * lb = library;
-    insertBook(lb, &n);
-    printf("One done\n");
-    insertBook(lb, &n);
-    displayAllBooks(library,n);
-
-
+    //insertBook(lb, &n);
+    //printf("One done\n");
+    //insertBook(lb, &n);
+    //displayAllBooks(library,n);
 
     do {
         printf("Enter\n 1 to insert book record\n 2 to Search based on book name\n ");
@@ -77,10 +107,13 @@ int main(){
                     insertBook(lb, &n);
                     break;
             case 2: //search by book name
+                    nameSearch(lb,n);
                     break;
             case 3: //search by book author
+                    authorSearch(lb,n);
                     break;
             case 4: //delete a book
+                    bookDelete(lb,n);
                     break;
             case 5: //dislayAllbooks
                     displayAllBooks(library,n);
