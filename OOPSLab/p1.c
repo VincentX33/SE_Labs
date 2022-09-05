@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+#define MAX 20
 struct Book{
     char name[30];
     char author[30];
@@ -188,17 +189,10 @@ void bookDelete(Book * a,int index,int * nbook){
 }
 int main(){
     int i=0,n=0,delIn; //n is for number of books in the library(unique only)
-    Book library[10];
+    Book library[MAX];
     char *s = (char *)malloc(sizeof(char)*50);
     printf("----- Library Management Tool --------\n");
-    // Book b1;
-    //insertBook(&b1,&n);
-    //displayBook(&b1);
     Book * lb = library;
-    //insertBook(lb, &n);
-    //insertBook(lb, &n);
-    //insertBook(lb, &n);
-    //insertBook(lb, &n);
     //insertBook(lb, &n);
     //nameSearch(lb,"sid",n); //tested works
     //authorSearch(lb,"vv",n); //tested works
