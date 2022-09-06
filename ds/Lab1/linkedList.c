@@ -74,30 +74,45 @@ int displayLL(struct node * a){
         printf("Empty list\n");
         return 0;
     }
-    int i = 0;
+    //int i = 0;
+    printf("|");
     while (a!= NULL){
         printf("%d --> ",a->value);
         a = a->next;
-        i++;
+        //i++;
     }
-    printf("\ni:%d\n",i);
+    printf("|\ni:%d\n",i);
 }
 int count(struct node * a){
-    //a is start node
     struct node * temp = a;
     int c = 0;
-    if (temp!=NULL){
+    while (temp!=NULL){
         c++;
         temp = temp->next;
     }
     return c;
 }
-void listSum(struct node * a){
-    
+int listSum(struct node * a){
+    int sum = 0;
+    struct node * temp = a;
+    while (temp!=NULL){
+        sum += temp->value;
+        temp = temp->next;
+    }
+    return sum;
 }
 
 int searchInList(struct node * a,int value ){
-
+    struct node * temp = a;
+    while (temp!=NULL){
+        if (temp->value == value){
+            printf("Value %d found in list\n",value);
+            return 1;
+        }
+        temp = temp->next;
+    }
+    printf("Value %d not found in linked list\n");
+    return 0;
 }
 
 int main(){
@@ -112,7 +127,6 @@ int main(){
             case 1: //
                     linklist = create(linklist);
                     break;
-
             case 2: //ll display
                     displayLL(linklist);
                     //errorAddress(linklist);
@@ -121,8 +135,10 @@ int main(){
                     printf("Element to be searched:");
                     scanf("%d",&s);
                     searchInList(linklist,s);//later modify for verbosity
+                    break;
             case 4: //count number of elements
-                    printf("There are %d elements in given list",count(linklist));
+                    printf("There are %d elements in given list\n",count(linklist));
+                    break;
             case 5: //
                     printf("The sum of linked list elements is %d\n",listSum(linklist));
                     break;
