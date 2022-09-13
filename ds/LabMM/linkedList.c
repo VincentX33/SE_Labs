@@ -6,6 +6,11 @@ struct node {
     struct node * next;
 };
 
+// addatbeg
+// addatend
+// 
+
+
 struct node * create(struct node * start){
     //if a is null at at beginning
     struct node * temp;
@@ -22,7 +27,7 @@ struct node * create(struct node * start){
         start->next = NULL;
         temp = start;
         w--;
-        
+
     }
     else{
         //if start is not null, to prevent data loss we have to
@@ -142,13 +147,13 @@ int main(){
             case 5: //
                     printf("The sum of linked list elements is %d\n",listSum(linklist));
                     break;
-            
+
             case 6: //break;
                     break;
-            default: 
+            default:
                     printf("Undefined input\n");
                     break;
-            
+
 
         }
     }while(c!=6);
