@@ -86,7 +86,7 @@ int displayLL(struct node * a){
         a = a->next;
         //i++;
     }
-    printf("|\ni:%d\n",i);
+    //printf("|\ni:%d\n",i);
 }
 int count(struct node * a){
     struct node * temp = a;
