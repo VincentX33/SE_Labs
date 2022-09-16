@@ -8,35 +8,39 @@ struct node {
 struct node * create(struct node * ,int * );
 struct node * addAtBeginning(struct node *, int *, int);
 struct node * addAtEnd(struct node *,int *, int);
-void displayList(struct node *, int);
+void displayList(struct node *);
 void searchList(struct node *,int );
 int count(struct node *, int);
-struct node * deleteFromList(struct node *, int *);
+struct node * deleteFromList(struct node *, int *,int);
 struct node * reverse(struct node *, int * );
 
 int main(){
     struct node * linklist = NULL;
-    int c = 0,n,s;
+    int c = 0,n = 0,s,index;
     do {
         printf("Enter:\n");
-        printf("\t1 to add value\n\t2 to display linked list\n\t3 to search\n\t4 to count");
-        printf("\n\t5 to perform value summation\n\t6 to exit\n\t:");
+        printf("\t1 to add value\n\t2 to display linked list\n\t3 to search\n\t4 to delete");
+        printf("\n\t5 to perform reversal\n\t6 to exit\n\t:");
         scanf("%d",&c);
         switch(c){
-            case 1: //
-                    
+            case 1: //add value to linked list
+                    linklist = create(linklist,&n);
                     break;
             case 2: //ll display
+                    displayList(linklist);
                     break;
             case 3: //search for given element
                     printf("Element to be searched:");
                     scanf("%d",&s);
+                    searchList(linklist,s);
                     break;
             case 4: //count number of elements
-                    printf("There are %d elements in given list\n",count(linklist));
+                    printf("Enter index to be deleted:");
+                    scanf("%d", &index);
+                    linklist = deleteFromList(linklist, &n,index);
                     break;
-            case 5: //
-                    printf("The sum of linked list elements is %d\n",listSum(linklist));
+            case 5: //reverse the linklist
+                    reverse(linklist,&n);
                     break;
             case 6: //break;
                     break;
@@ -52,11 +56,20 @@ int main(){
 struct node * create(struct node * start,int * nlen){
     //create takes n nodes in the beginning
     int n,j,i;
-    start = NULL;
+    //start = NULL;
     printf("Enter number of nodes:");
     scanf("%d",&n);
     if (n==0)
         return start;
+    if (*nlen != 0){
+        //if list already exists
+        for (j = 0;j<n;j++){
+            printf("Enter value:");
+            scanf("%d",&i);
+            start = addAtEnd(start,nlen,i);
+        }    
+        return start;
+    }
     printf("Enter value:");
     scanf("%d",&i);
     start = addAtBeginning(start,nlen,i); //add at beg will add content and return start pointer
@@ -128,7 +141,8 @@ int count(struct node * start){
 struct node * deleteFromList(struct node *start, int * nlen, int index){
     if (start == NULL){
         printf("Empty list\n");
-        return; 
+        *nlen = 0;
+        return start; 
     }
     struct node * p = start;
     struct node * temp;
@@ -150,7 +164,7 @@ struct node * deleteFromList(struct node *start, int * nlen, int index){
     *nlen = *nlen -1 ;
     return start;
 }
-struct node * reverse(struct node * start, int * nlencd ){
+struct node * reverse(struct node * start, int * nlen ){
     //reverse the list
     //first node shud become last,last first,2nd point to first, 3rd to 2nd
     /*
@@ -160,4 +174,21 @@ struct node * reverse(struct node * start, int * nlencd ){
         temp->next = newstart;
         newstart = temp;
     */
+   if (start == NULL){
+    printf("Empty list");
+    return start;
+   }
+   struct node * temp, *ptr, *a;
+   ptr = start;
+   while (ptr->next != NULL){
+    temp = ptr->next; //the second node is stored as temp;
+    ptr->next = temp->next; //the third node is pointed to by first node
+    temp->next = start;
+    /* 
+        instead of pointing to third node temp is pointed to first node
+        so that temp now is the first node 
+    */ 
+    start = temp; //now temp becomes first node as it points to ptr, ptr points to 3rd      
+   }
+   return start;
 }
