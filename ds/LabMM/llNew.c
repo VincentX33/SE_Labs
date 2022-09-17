@@ -10,7 +10,7 @@ struct node * addAtBeginning(struct node *, int *, int);
 struct node * addAtEnd(struct node *,int *, int);
 void displayList(struct node *);
 void searchList(struct node *,int );
-int count(struct node *, int);
+int count(struct node *);
 struct node * deleteFromList(struct node *, int *,int);
 struct node * reverse(struct node *, int * );
 
@@ -34,13 +34,13 @@ int main(){
                     scanf("%d",&s);
                     searchList(linklist,s);
                     break;
-            case 4: //count number of elements
+            case 4: //delete element
                     printf("Enter index to be deleted:");
                     scanf("%d", &index);
                     linklist = deleteFromList(linklist, &n,index);
                     break;
             case 5: //reverse the linklist
-                    reverse(linklist,&n);
+                    linklist = reverse(linklist,&n);
                     break;
             case 6: //break;
                     break;
