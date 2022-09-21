@@ -15,14 +15,12 @@ struct node * create(struct node * start){
     scanf("%d",&w);
     if (start==NULL){
         start = (struct node * )malloc(sizeof(struct node));
-        //regulate temp pointer
         printf("Enter first value:");
         scanf("%d",&val);
         start->value = val;
         start->next = NULL;
         temp = start;
         w--;
-        
     }
     else{
         //if start is not null, to prevent data loss we have to
@@ -33,12 +31,9 @@ struct node * create(struct node * start){
             temp = temp->next;
             i++;
         }
-        //printf("\n moved %d nodes forward:\nCurrent node: %d\n", i,i+1);
+        for (temp = start, i = 0; temp->next!=NULL;temp = temp->next)
+            i++;
     }
-    //now temp is supposed to be NULL if >=1 element exists
-    //now take the elements in temp
-    //take number of elements n
-    //loop n times
     while (w--){
         //printf("\nw==%d\n",w);
         if (temp->next==NULL){
@@ -55,24 +50,11 @@ struct node * create(struct node * start){
     //if a is not null add another node at the end and return same start
     return start;
 }
-void errorAddress(struct node * a){
-    if (a==NULL){
-        printf("Error\n");
-        return ;
-    }
-    while (a->next!=NULL){
-        printf("\nAddress of a is %x\n",a);
-        printf("Address of next node is %x\n",a->next);
-        printf("==========\n");
-        a = a->next;
-    }
 
-}
-
-int displayLL(struct node * a){
+void displayLL(struct node * a){
     if (a==NULL){
         printf("Empty list\n");
-        return 0;
+        return;
     }
     //int i = 0;
     printf("|");
@@ -81,7 +63,7 @@ int displayLL(struct node * a){
         a = a->next;
         //i++;
     }
-    printf("|\ni:%d\n",i);
+    //printf("|\ni:%d\n",i);
 }
 int count(struct node * a){
     struct node * temp = a;
@@ -142,13 +124,13 @@ int main(){
             case 5: //
                     printf("The sum of linked list elements is %d\n",listSum(linklist));
                     break;
-            
+
             case 6: //break;
                     break;
-            default: 
+            default:
                     printf("Undefined input\n");
                     break;
-            
+
 
         }
     }while(c!=6);
