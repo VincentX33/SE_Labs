@@ -19,11 +19,15 @@ struct node * addafter(struct node *,struct node *);
 struct node * addatbeg(struct node *,struct node *);
 struct node * addatend(struct node *,struct node *);
 struct node * create(struct node *);
-struct node * add(struct node *,struct node *);
 struct node * setEdit(struct node * );
 void displayLL(struct node *);
 struct node * deleteTerm(struct node *, int);
-int isIn(struct node *);
+int isIn(struct node *, int);
+struct node * Set_union(struct node *,struct node *);
+struct node * difference(struct node *,struct node *);
+struct node * intersection(struct node *,struct node *);
+
+
 int main(){
   struct node * set1 = NULL, * set2 = NULL, * set3 = NULL, *set4 = NULL;
   int c,status = 0,e;
@@ -45,10 +49,10 @@ int main(){
         status = 1;
         break;
       case 2:
-        if (status == 0){union
+        if (status == 0){
           printf("Sets have to be accepted before union\nEnter Set A:\n");
           set1 = create(set1);
-          printf("Enter set B:\n")
+          printf("Enter set B:\n");
           set2 = create(set2);
           status = 1;
         }
@@ -59,7 +63,7 @@ int main(){
       if (status == 0){
         printf("Sets have to be accepted before intersection\nEnter Set A:\n");
         set1 = create(set1);
-        printf("Enter set B:\n")
+        printf("Enter set B:\n");
         set2 = create(set2);
         status = 1;
       }
@@ -70,30 +74,33 @@ int main(){
       if (status == 0){
         printf("Sets have to be accepted before difference\nEnter Set A:\n");
         set1 = create(set1);
-        printf("Enter set B:\n")
+        printf("Enter set B:\n");
         set2 = create(set2);
         status = 1;
       }
         printf("Enter 1 for A-B, 2 for B-A:");
         scanf("%d", &e);
         if (e==1){
-
+          set3 = difference(set1,set2);
         }else if(e==2){
-
+          set3 = difference(set2,set1);
         }else{
           printf("Invalid order\n");
         }
+        displayLL(set3);
         break;
       case 5:
+        printf("Set 1: ");
         displayLL(set1);
+        printf("Set 2: ");
         displayLL(set2);
+        break;
       case 6:
         break;
       default:
         printf("Enter correct input values\n");
     }
   }while(c!=6);
-
   return 0;
 }
 struct node * create(struct node * start){
@@ -101,12 +108,12 @@ struct node * create(struct node * start){
   start = NULL;
   struct node * temp;
   int n,a,b;
-  printf("Enter number of terms:");
+  printf("Enter number of items:");
   scanf("%d",&n);
   while (n--){
     temp = (struct node *)malloc(sizeof(struct node));
-    printf("Enter coefficient and exponent (c,e):");
-    scanf("%d,%d", &(temp->coeff),&(temp->expo));
+    printf("Enter value:");
+    scanf("%d", &(temp->value));
     temp->next = NULL;
     if (start == NULL){
       start = addatbeg(start,temp);
@@ -133,33 +140,21 @@ struct node * addatend(struct node * start, struct node * p){
     return start;
 }
 struct node * addafter(struct node * start, struct node * p){
-  //check if p's coefficient < the next node's coefficient
-  //check first node is null or not
-  if ((start==NULL) || (p->expo > start->expo)){
+  if ((start==NULL) || (p->value < start->value)){
     start = addatbeg(start,p);
     return start;
   }
   struct node * temp = start;
-  while ((temp->next != NULL) && (p->expo < temp->next->expo)){
+  while ((temp->next != NULL) && (p->value > temp->next->value)){
     temp = temp->next;
   }
   //check if temp->next = null, if it is, add at end
   if (temp->next == NULL){
-    //check whether one node only
-    if (p->expo > temp->expo){
-      p->next = temp;
-      start = p;
+    if (p->value > temp->value){
+      temp->next = p;
     }
-    else if (p->expo == temp->expo){
-      temp->coeff += p->coeff;
-    }else if (p->expo < temp->expo){
-      temp->next = p; //if the p exp is lower than any yet encountered
-    }
-    return start;
   }else {
-    if (p->expo == temp->next->expo)
-      temp->next->coeff += p->coeff;
-    else if (p->expo > temp->next->expo) {
+    if (p->value < temp->next->value) {
       p->next = temp->next;
       temp->next = p;
     }
@@ -171,38 +166,37 @@ void displayLL(struct node * a){
         printf("Empty list\n");
         return;
     }
-    //int i = 0;
-    printf("| ");
+    printf("{ ");
     while (a!= NULL){
-        printf("%dX^%d + ",a->coeff, a->expo);
+        printf("%d , ", a->value);
         a = a->next;
         //i++;
     }
-    printf(" + 0 = 0 |\n");
+    printf(" }\n");
 }
 
-struct node * add(struct node *a,struct node *b){
+struct node * Set_union(struct node *a,struct node *b){
   //add two sets
-  struct node * sum = NULL;
+  struct node *sum = NULL;
   while (a!=NULL && b!= NULL)//as long as neither one  null
   {
     struct node * temp = (struct node *)malloc(sizeof(struct node));
-    if (a->expo == b->expo){
-      temp->expo = b->expo;
-      temp->coeff = a->coeff + b->coeff;
-      temp->next = NULL; //not needed
-      sum = addatend(sum,temp);
-      a = a->next;
-      b = b->next;
-    }else if (a->expo > b->expo){
-      temp->expo = a->expo;
-      temp->coeff = b->coeff;
+    if (a->value == b->value){
+      temp->value = a->value;
+      temp->next = NULL;
+      if (sum == NULL){
+        sum = addatbeg(sum,temp);
+      }
+      else {
+        sum = addatend(sum,temp);
+      }
+    }else if (a->value < b->value){
+      temp->value = a->value;
       temp->next = NULL;
       sum = addatend(sum,temp);
       a = a->next;
-    }else if (b->expo > a->expo){
-      temp->expo = b->expo;
-      temp->coeff = b->coeff;
+    }else if (b->value < a->value){
+      temp->value = b->value;
       temp->next = NULL;
       sum = addatend(sum,temp);
       b = b->next;
@@ -213,84 +207,80 @@ struct node * add(struct node *a,struct node *b){
   p = (a==NULL)?b:a;
   while (p!=NULL){
     struct node * temp = (struct node *)malloc(sizeof(struct node));
-    temp->coeff = p->coeff;
-    temp->expo = p->expo;
+    temp->value = p->value;
     temp->next = NULL;
-    sum = addatbeg(sum, temp);
+    sum = addatend(sum, temp);
     p = p->next;
   }
   return sum;
 }
-struct node * multiply(struct node * p1, struct node *p2){
-  //multiplication valid as long as both are non null
-  struct node * product = NULL;
-  struct node * a, *b;
-  a = p1;
-  b = p2;
-  if (a==NULL || b==NULL)
-    return product;
-  /*
-  carry out outer traversal on one set
-  inner traversal occurs as long as outer is not null
-  use just one product node
-  */
- while (a!=NULL){
-  b = p2;
-  while (b!=NULL){
-    struct node * temp = (struct node *)malloc(sizeof(struct node));
-    temp->coeff = a->coeff * b->coeff;
-    temp->expo = a->expo + b->expo;
-    temp->next = NULL;
-    product = addafter(product, temp);
-    b = b->next;
-  }
-  a = a->next;
- }
- return product;
-}
-struct node * polEdit(struct node * a){
-  //either insert a term or delete a term
-  int c;
-  printf("Enter \n\t1 to insert a term\n\t2 to delete a term\n:");
-  scanf("%d", &c);
-  struct node * temp = (struct node *)malloc(sizeof(struct node));
-  if (c==1)
-  {
-    printf("Enter coefficient and exponent:");
-    scanf("%d,%d",&(temp->coeff),&(temp->expo));
-    temp->next = NULL;
-    a = addafter(a,temp);
-  }
-  else if (c==2){
-    printf("Enter exponent of term to be deleted:");
-    scanf("%d",&c);
-    a = deleteTerm(a, c);
-  }
-  else{
-    printf("Only two options\nReturning unmodified start\n");
-  }
-  return a;
-}
-struct node * deleteTerm(struct node * start, int exp){
-  struct node * p = start;
-  if (start == NULL)
-    return start;
-  else if (start->expo == exp){
-    p = start;
-    start = start->next;
-    free(p);
-    return start;
-  }
-  while (p->next!=NULL){
-    if (p->next->expo == exp){
-      struct node * temp = (struct node *)malloc(sizeof(struct node));
-      temp = p->next;
-      free(temp);
-      p->next = temp->next;
-      return start;
+int isIn(struct node * a, int v){
+  int s = 0;
+  while (a!= NULL){
+    if (a->value == v){
+      return 1;
     }
-    p = p->next;
+    a = a->next;
   }
+  return 0;
+}
+
+struct node * intersection(struct node *a,struct node *b){
+  if (a==NULL || b==NULL)
+    return NULL;
+  struct node * inter = NULL;
+  int i;
+  while (a && b){
+    i = a->value;
+    if (isIn(b,i)){
+      struct node * temp = (struct node * )malloc(sizeof(struct node));
+      temp->value = i;
+      temp->next = NULL;
+      inter = addatend(inter,temp);
+    }
+    a = a->next;
   }
-  printf("Item %d not found in list\n");
-  return start;
+  return inter;
+}
+
+struct node * difference(struct node * from, struct node * remove){
+  struct node * inter = intersection(from, remove); 
+  //iterate over from,
+  //if element in inter, don't input
+  struct node * result = NULL;
+  for (from; from != NULL; from = from->next){
+    if (!(isIn(inter,from->value))){
+      struct node * temp = (struct node *)malloc(sizeof(struct node));
+      temp->value = from->value;
+      temp->next = NULL;
+      result = addatend(result,temp);
+    }
+  }
+  return result;
+  //as we have to remove from `from` all inter elements
+
+}
+struct node * deleteTerm(struct node *start, int v){
+  struct node * a = start;
+  if (a == NULL)
+    return a;
+  else if (!(isIn(a,v)))
+    return a;
+  //start element
+  else if (a->value == v){
+    struct node * temp = a;
+    a = a->next;
+    free(temp);
+    return a;
+  }else {
+    while (a->next != NULL){
+      if (a->next->value == v){
+        struct node * temp = a->next;
+        a->next = temp->next;
+        free(temp);
+        return a;
+      }
+      a = a->next;
+    }
+  }
+}
