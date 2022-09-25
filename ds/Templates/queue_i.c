@@ -48,7 +48,7 @@ void enqueue(int que[], int * front, int * rear, int val ){
     que[0] = val;
   }
   //as long as queue is less than MAX-1
-  if (*rear == MAX-1)
+  else if (*rear == MAX-1)
     *rear = 0;
   else
     (*rear)++;

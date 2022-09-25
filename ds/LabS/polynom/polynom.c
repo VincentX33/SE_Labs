@@ -7,6 +7,8 @@ struct node{
   struct node * next;
 };
 
+char filename1[] = "input1.txt";
+char filename2[] = "input2.txt";
 /*
 addatbeg
 addatend
@@ -26,8 +28,10 @@ struct node * multiply(struct node *, struct node *);
 struct node * polEdit(struct node * );
 void displayLL(struct node *);
 struct node * deleteTerm(struct node *, int);
-int main(){
-  struct node * polynomial1 = NULL, * polynomial2 = NULL, * p3 = NULL, *p4 = NULL;  
+struct node * createFromFile (struct node *, int fileNumber);
+int main(){  
+  struct node * polynomial1 = NULL, * polynomial2 = NULL;
+  struct node * p3 = NULL, *p4 = NULL;  
   int c,status = 0,e;
   printf("---------Polynomial handler program-----------\n");
   do{
@@ -36,7 +40,8 @@ int main(){
     printf("3 to multiply the 2 polynomials\n ");
     printf("4 to modify either of two polynomials\n ");
     printf("5 to display both polynomials\n ");
-    printf("6 to exit the polynomial\n ");
+    printf("6 to accept two polynomials from input file:\n ");
+    printf("7 to exit the program\n ");
     scanf("%d",&c);
     switch(c){ 
       case 1: 
@@ -78,12 +83,22 @@ int main(){
       case 5:
         displayLL(polynomial1);
         displayLL(polynomial2);
-      case 6:
+        break;
+      case 6: 
+        polynomial1 = createFromFile(polynomial1,1);  
+        printf("Input from input1.txt:\n");
+        displayLL(polynomial1);
+        polynomial2 = createFromFile(polynomial2,2);
+        printf("Input from input2.txt:\n");
+        displayLL(polynomial2);
+        status = 1;
+        break;
+      case 7:
         break;
       default:
         printf("Enter correct input values\n");
     }
-  }while(c!=6);
+  }while(c!=7);
   
   return 0;
 }
@@ -182,20 +197,20 @@ struct node * add(struct node *a,struct node *b){
       temp->expo = b->expo;
       temp->coeff = a->coeff + b->coeff;
       temp->next = NULL; //not needed
-      sum = addatend(sum,temp);
+      sum = addafter(sum,temp);
       a = a->next;
       b = b->next;
     }else if (a->expo > b->expo){
       temp->expo = a->expo;
-      temp->coeff = b->coeff;
+      temp->coeff = a->coeff;
       temp->next = NULL;
-      sum = addatend(sum,temp);
+      sum = addafter(sum,temp);
       a = a->next;
     }else if (b->expo > a->expo){
       temp->expo = b->expo;
       temp->coeff = b->coeff;
       temp->next = NULL;
-      sum = addatend(sum,temp);
+      sum = addafter(sum,temp);
       b = b->next;
     }
   }
@@ -207,7 +222,7 @@ struct node * add(struct node *a,struct node *b){
     temp->coeff = p->coeff;
     temp->expo = p->expo;
     temp->next = NULL;
-    sum = addatbeg(sum, temp);
+    sum = addafter(sum, temp);
     p = p->next;
   }
   return sum;
@@ -283,5 +298,32 @@ struct node * deleteTerm(struct node * start, int exp){
     p = p->next;
   }
   printf("Item %d not found in list\n");
+  return start;
+}
+struct node * createFromFile (struct node * start, int n){
+  start = NULL;
+  
+  FILE * fp1 = fopen(filename1,"r");
+  FILE * fp2 = fopen(filename2,"r");
+  FILE * fp;
+  if (n==1)
+    fp = fp1;
+  else if (n==2)
+    fp = fp2;
+  //first line of every input file contains number of terms
+  //have to take that many terms
+  // an example term is (2,3) in coefficient,exponent format
+  //each term is space seperated
+  int n1,n2,c,e,y;
+  fscanf(fp,"%d",&n1);
+  struct node * temp = NULL;
+  for (y = 0 ; y < n1; y++){
+    fscanf(fp,"%d %d",&c,&e);
+    temp = (struct node *)malloc(sizeof(struct node));
+    temp->coeff = c;
+    temp->expo = e;
+    temp->next = NULL;
+    start = addafter(start,temp);
+  }
   return start;
 }

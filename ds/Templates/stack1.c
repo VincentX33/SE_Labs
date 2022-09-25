@@ -33,12 +33,12 @@ void push(int stack[], int * t,int item){
   //increment top, add item at top
   *t = *t +1;
   stack[*t] = item;
-  }
+}
 int pop(int a[],int * t){
   //check for stack underflow
   if (isEmpty(t)){
     printf("Error:Stack underflow\n");
-    return;
+    return 0;
   }
   int i;
   i = a[*t];
