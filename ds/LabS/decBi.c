@@ -6,10 +6,10 @@
 //global variables
 #define MAX 20
 int stack[MAX];
-short int top = -1;
+int top = -1;
 //function prototypes
 void push(int [],int *, int);
-int pop(int [],int *);
+void pop(int [],int *);
 void peek(int [], int *);
 int isEmpty(int *);
 int isFull(int *);
@@ -42,12 +42,11 @@ void push(int stack[], int * t,int item){
   //increment top, add item at top
   *t = *t +1;
   stack[*t] = item;
-  int n;
   printf("Enter decimal no to convert to binary:");
   scanf("%d",&n);
   decToBi(stack,&top, n);
 }
-int pop(int a[],int * t){
+void pop(int a[],int * t){
   //check for stack underflow
   if (isEmpty(t)){
     printf("Error:Stack underflow\n");
@@ -55,6 +54,7 @@ int pop(int a[],int * t){
   }
   int i;
   i = a[*t];
+  printf("%d ", i);
   *t = *t-1;
   return i;
 }

@@ -1,12 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-//for this version use global stack
 
 //global variables
 #define MAX 20
-int stack[MAX];
-short int top = -1;
+
 //function prototypes
 void push(int [],int *, int);
 int pop(int [],int *);
@@ -23,12 +21,7 @@ int main(){
   int item;
   int stack[MAX];
   int top = -1;
-  //decimal to binary
-  while (1){
-    printf("Enter decimal no to convert to binary:");
-    scanf("%d",&n);
-    decToBi(stack,&top, n);
-  }
+  
 
   return 0;
 
@@ -41,9 +34,7 @@ void push(int stack[], int * t,int item){
   }
   //increment top, add item at top
   *t = *t +1;
-  stack[*t] = item;
-  int n;
-  printf("Enter decimal no to convert to binary:");
+  stack[*t] = item;printf("Enter decimal no to convert to binary:");
   scanf("%d",&n);
   decToBi(stack,&top, n);
 }
