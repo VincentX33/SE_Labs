@@ -1,0 +1,21 @@
+8
+Go run a marathon
+5.0
+Complete DS File
+10.0
+Complete OOPs File
+1.0
+CO Tutorial
+1.5
+Maths
+3.0
+Starters 59
+3.0
+Study for IT: DS
+10.0
+Study for IT: OOPS 
+1.0
+Learn STL
+2.0
+Complete Notebooks
+4.0
