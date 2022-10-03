@@ -1,8 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
 
+struct node {
+    char data;
+    struct node * next;  
+};
 #define MAX 100
 int stack[MAX];
 int top = -1;
@@ -62,46 +65,98 @@ void display(){
   printf("\n");
 }
 
-long int pfEval(char exp[]){
-  long int a,b,temp,result;
-  int i;
-  //use the same stack for this
-  for (i = 0;i<strlen(exp);i++){
-    if (exp[i]<='9' && exp[i]>='0')
-      push(exp[i]-'0');
-    else {
-      a = pop();
-      b = pop();
-      switch(exp[i]){
+void infixToPostfix(char * infixExp){
+  int i,p = 0;
+  char next, symbol, postfix[100];
+  for (i = 0;i < strlen(infixExp);i++){
+    symbol = infixExp[i];
+    if (!isWhiteSpace(symbol)){
+      switch(symbol){
+        case '(': 
+          push('(');
+          break;
+        case ')':
+          while ((next=pop(stack))!='('){
+            postfix[p++] = next;
+          }
+          break;
         case '+':
-          temp = b+a;
-          break;
         case '-':
-          temp = b-a;
-          break;
         case '*':
-          temp = b*a;
-          break;
         case '/':
-          temp = b/a;
-          break;
-        case '%':
-          temp = b%a;
-          break;
         case '^':
-          temp = pow(b,a);
+          int i,j;
+          i = instackPriority(stack[top]);
+          j = incomingPriority(symbol);
+          while ((top!=-1)&&(instackPriority(stack[top]) >= incomingPriority(symbol)))
+            postfix[p++] = pop();
+          push(symbol);
+          break;
+        default:
+          postfix[p++] = symbol;
           break;
       }
-      push(temp);
     }
   }
-  result = pop();
-  return result;
+  while (top!= -1){
+    postfix[p++] = pop(); 
+  }
+  postfix[p] = '\0';
+  printf("Final expression is %s\n",postfix);
+}
+int charToInt(char c){
+  return (c-'0');
+}
+void pfEval(char exp[]){
+  int i = 0,j,a,b,f;
+  char c;
+  //use the same stack for this
+  for (i = 0; i<strlen(exp);i++){
+    push();
+  }
+    c = exp[i];
+    switch(c){
+      case '+':
+        a = pop();
+        b = pop();
+        f = a + b;
+        push(f);
+        break;
+      case '-':
+        a = pop();
+        b = pop();
+        f = b-a;
+        push(f);
+      case '*':
+        a = pop();
+        b = pop();
+        f = b*a;
+        push(f);
+      case '/':
+        a = pop();
+        b = pop();
+        f = b/a;
+        push(f);
+      case '%':
+        a = pop();
+        b = pop();
+        f = b%a;
+        push(f);
+      case '^':
+        a = pop();
+        b = pop();
+        f = pow(b,a);
+        push(f);
+      default:
+        j = charToInt(c);
+        push(j);
+    }
+  }
 }
 int main(){
   //code for evaluating postfix express 
   char exp[100];
   printf("Enter expression:");
   scanf("%s",exp);
-  printf("Result is %ld\n",pfEval(exp));
+  pfEval(exp);
 }

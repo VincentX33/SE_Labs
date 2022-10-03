@@ -49,8 +49,8 @@ void enqueue(int que[], int * front, int * rear, int val ){
 int dequeue(int que[], int * front, int * rear){
   //check if empty
   if (isEmpty(*front, *rear)){
-    printf("Empty queue\n");
-    return 0;
+    //printf("Empty queue\n");
+    return -1;
   }
   int n;
   if (*front == *rear){

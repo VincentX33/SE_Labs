@@ -1,20 +1,61 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
 
+struct node {
+    char data;
+    struct node * next;  
+};
 #define MAX 100
-int stack[MAX];
+char stack[MAX];
 int top = -1;
 //function prototypes
-void push(int item);
-int pop();
+void push(char item);
+char pop();
 void peek();
 int isEmpty();
 int isFull();
 void display();
 
-void push(int item){
+int instackPriority(char c){
+  int k;
+  switch(c){
+    case ')':
+      k = 0;
+      break;
+    case '+':
+    case '-':
+      k = 1;
+      break;
+    case '*':
+    case '/':
+    case '%':
+      k = 2;
+      break;
+    case '^':
+      k = 4;
+      break;
+  }
+  return k;
+}
+int incomingPriority(char c){
+  switch(c){
+    case ')':return 0;
+    case '+':
+    case '-':return 1;
+    case '*':
+    case '/':
+    case '%':return 2;
+    case '^':return 3;
+  }
+}
+int isWhiteSpace(char c ){
+  if (c==' ' || c=='\t'||c=='\n')
+    return 1;
+  return 0;
+}
+
+void push(char item){
   //check for overflow
   if (isFull()){
     printf("Error: Stack overflow\n");
@@ -23,7 +64,7 @@ void push(int item){
   //increment top, add item at top
   stack[++top] = item;
 }
-int pop(){
+char pop(){
   //check for stack underflow
   if (isEmpty()){
     printf("Error:Stack underflow\n");
@@ -62,47 +103,46 @@ void display(){
   printf("\n");
 }
 
-long int prfEval(char exp[]){
-  long int a,b,temp,result;
-  int i;
-  char * exp2 = (char *)malloc(sizeof(char)*100);
-  strcpy(exp2,strrev(exp));
-  for (i = 0;i<strlen(exp2);i++){
-    if (exp[i]<='9' && exp[i]>='0')
-      push(exp[i]-'0');
-    else {
-      a = pop();
-      b = pop();
-      switch(exp[i]){
+void infixToprefix(char * infixExp){
+  int i,p = 0;
+  char next, symbol, prefix[100];
+  for (i = strlen(infixExp)-1;i >= 0;i--){
+    symbol = infixExp[i];
+    if (!isWhiteSpace(symbol)){
+      switch(symbol){
+        case ')': 
+          push(')');
+          break;
+        case '(':
+          while ((next=pop(stack))!=')'){
+            prefix[p++] = next;
+          }
+          break;
         case '+':
-          temp = a+b;
-          break;
         case '-':
-          temp = a-b;
-          break;
         case '*':
-          temp = a*b;
-          break;
         case '/':
-          temp = a/b;
-          break;
-        case '%':
-          temp = a%b;
-          break;
         case '^':
-          temp = pow(a,b);
+          while ((top!=-1)&&(instackPriority(stack[top]) > incomingPriority(symbol)))
+            prefix[p++] = pop();
+          push(symbol);
+          break;
+        default:
+          prefix[p++] = symbol;
           break;
       }
-      push(temp);
     }
   }
-  result = pop();
-  return result;
+  while (top!= -1){
+    prefix[p++] = pop(); 
+  }
+  prefix[p] = '\0';
+  printf("Final expression is %s\n",strrev(prefix));
 }
 int main(){
-  //code for evaluating postfix express 
+  //code for evaluating prefix express 
   char exp[100];
   printf("Enter expression:");
   scanf("%s",exp);
-  printf("Result is %ld\n",prfEval(exp));
+  infixToprefix(exp);
 }
