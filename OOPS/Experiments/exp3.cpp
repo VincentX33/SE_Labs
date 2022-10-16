@@ -1,5 +1,5 @@
 #include <iostream>
-
+using namespace std;
 
 // to implement copy constructors, parameterized constructor and destructor
 
