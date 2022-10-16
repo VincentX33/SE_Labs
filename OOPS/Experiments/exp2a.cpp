@@ -10,7 +10,7 @@ void swap(int & a,int & b){
 
 int main(){
 	int a = 1,b= 3;
-	cout<<"\nBefore swapf\n";
+	cout<<"\nBefore swap\n";
 	cout<<"A = "<<a<<" B = "<<b<<"\n";
 	swap(a,b);
 	cout<<"\nAfter swap\n\n";
