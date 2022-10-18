@@ -17,7 +17,6 @@ void enqueue(struct node ** front,struct node **rear,int val){
   if (!t)return;
   t->value = val;
   t->next = NULL;
-
   if ((*front == *rear) && (*front == NULL)){
     *front = t;
     *rear = t;

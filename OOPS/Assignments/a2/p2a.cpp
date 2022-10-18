@@ -1,0 +1,31 @@
+#include <iostream>
+
+using namespace std;
+
+class complex{
+	float real;
+	float imag;
+	public: complex(float,float);
+					void display();
+					friend complex sum(complex&,complex&);
+};
+complex::complex(float i = 0,float j = 0){
+	real = i;
+	imag = j;
+}
+void complex::display(){
+	cout<<"Z = "<<real;
+	cout<<((imag>0)?" + ":"")<<imag<<"i \n";
+}
+complex sum(complex &a, complex& b){
+	complex c(a.real+b.real,a.imag+b.imag);
+	return c;
+}
+
+int main(){
+	complex a(10,2), b(25, 7);
+	complex c = sum(a,b);
+	c.display();	
+	return 0;
+
+}
