@@ -7,7 +7,7 @@ struct node {
 };
 /*
 implement various link list functions
-create
+create:done
 insert
   at beginning:done
   in empty:same as above
@@ -151,30 +151,4 @@ void createList(struct node ** start,int n){
     temp->value = num;
     insertAtEnd(start,temp);
   }
-}
-int main(){
-  struct node *list = NULL;
-  createList(&list,5);
-  displayList(list);
-  
-  printf("Address of list's pointer is %p\n",&list);
-
-  struct node * t = (struct node *)malloc(sizeof(struct node));
-  t->value = 100;
-  t->next = NULL;
-  insertAtBeginning(&list,t);
-  printf("Address of list's pointer is %p\n",&list);
-  struct node * r = (struct node *)malloc(sizeof(struct node));
-  r->next = NULL;
-  r->value = 300;
-  insertAtEnd(&list,r);
-  struct node * q = (struct node *)malloc(sizeof(struct node));
-  q->value = 200;
-  q->next = NULL;
-  insertAtIndex(&list,q,2);
-  displayList(list);
-  deleteValue(&list,100);
-  deleteAtIndex(&list,2);
-  displayList(list);
-  return 0;
 }
