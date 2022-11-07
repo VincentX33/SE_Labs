@@ -38,8 +38,8 @@ void Student::getinfo(){
 }
 int main(){
   Student X;
-  X.getinfo();
-  Student Y("Joston Pereira", 19, 25);
+  X.getinfo(); //calling member function
+  Student Y("Joshua Higgs", 19, 9.99); //parameterized constructor
   X.display();
   Y.display();
   return 0;

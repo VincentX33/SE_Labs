@@ -1,3 +1,11 @@
 *.exe
 *.o
 *.out
+.vscode/c_cpp_properties.json
+.vscode/launch.json
+.vscode/settings.json
+.vscode/tasks.json
+DS/.vscode/launch.json
+DS/.vscode/settings.json
+DS/.vscode/tasks.json
+OOPS/.vscode/tasks.json

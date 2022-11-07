@@ -28,7 +28,8 @@ Wolf::~Wolf(){
   cout<<"Destroying object after main closed with destructor\n";
 }
 int main(){
-  char * s = "Saruman";
+  char * s = (char *)malloc(sizeof(char)*15);
+  strcpy(s,"Saruman");
   Wolf A(3,140.3,s);
   A.display();
   cout<<"Last line of main\n";
