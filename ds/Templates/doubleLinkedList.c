@@ -160,3 +160,16 @@ int main(){
 
   return 0;
 }
+void createDouble(struct node ** start,int n){
+  if (n>0){
+    int v;
+    while (n--){
+      printf("Enter value:");
+      scanf("%d",&v);
+      struct node * temp = (struct node *)malloc(sizeof(struct node));
+      temp->value = v;
+      temp->next = NULL;
+      insertAtEnd(start,temp);
+    }
+  }
+}

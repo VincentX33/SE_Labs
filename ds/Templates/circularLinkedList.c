@@ -89,6 +89,20 @@ void displayCircularList(struct node ** last){
   }
   printf("%d ]\n", (*last)->value);
 }
+void createCircular(struct node ** last, int n){
+  //to create n nodes
+  if (n>0){
+    int v;
+    while (n--){
+      printf("Enter value:");
+      scanf("%d",&v);
+      struct node * temp = (struct node *)malloc(sizeof(struct node));
+      temp->value = v;
+      temp->next = NULL;
+      addAtEnd(last,temp);
+    }
+  }
+}
 
 int main(){
   struct node * last = NULL;
