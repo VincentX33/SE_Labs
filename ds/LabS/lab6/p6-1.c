@@ -2,9 +2,7 @@
 #include <stdlib.h>
 #include "doubleLinkedList.h"
 //@vincent Dsouza
-
 //swap the adjacent elements of doubly linkedlist
-//by rearrangin the links
 void swap(struct node ** start){
   //if empty or only node unchanged
   if (*start == NULL || (*start)->next == NULL){

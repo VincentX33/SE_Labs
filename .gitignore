@@ -10,3 +10,5 @@ DS/.vscode/settings.json
 DS/.vscode/tasks.json
 OOPS/.vscode/tasks.json
 *.docx
+*trial*
+*.pdf
