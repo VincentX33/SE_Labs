@@ -5,10 +5,6 @@ class Sample{
     int x,y;
 public: 
     Sample(int a, int b){x=a;y=b;}
-    // Sample(Sample &a){
-    //     x = a.x;
-    //     y = a.y;
-    // }
     void display(){
         cout<<"x:"<<x<<"  y:"<<y<<"\n";
     }

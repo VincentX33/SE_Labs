@@ -57,13 +57,13 @@ int main(){
     Complex a;
     Complex b(1.0, 2.0);
     a.getData();
-    cout<<"\nPrefix output:\n";
+    cout<<"\nPrefix output of (++a):\n";
     (++a).display(); 
-    cout<<"\nAfter prefix\n";
+    cout<<"\nAfter prefix (a)\n";
     a.display();
-    cout<<"\nPostfix display:\n";
+    cout<<"\nPostfix display (a++):\n";
     (a++).display();
-    cout<<"\nAfter postfix\n";
+    cout<<"\nAfter postfix (a)\n";
     //b = a+b;
     // a++;
     a.display();
