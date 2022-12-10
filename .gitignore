@@ -12,3 +12,5 @@ OOPS/.vscode/tasks.json
 *.docx
 *trial*
 *.pdf
+DS/LabS/lab7/binaryTree/*
+ignoredFolder/*
