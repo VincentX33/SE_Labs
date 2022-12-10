@@ -1,8 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-struct treenode
-{
+struct treenode{
 	struct treenode *lchild;
 	int info;
 	struct treenode *rchild;
@@ -210,7 +209,7 @@ void postorder(struct treenode *ptr)
 		return;
 	postorder(ptr->lchild);
 	postorder(ptr->rchild);
-	printf("%d", ptr->info);
+	printf("%d ", ptr->info);
 }
 
 int height(struct treenode *ptr)
